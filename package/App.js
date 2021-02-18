@@ -31,7 +31,7 @@ import _ from 'underscore';
 import { connect } from 'react-redux';
 import SchemaJson from './components/SchemaComponents/SchemaJson.js';
 import PropTypes from 'prop-types';
-import { SCHEMA_TYPE, debounce } from './utils.js';
+import { SCHEMA_TYPE, SCHEMA_X, debounce } from './utils.js';
 import handleSchema from './schema';
 const GenerateSchema = require('generate-schema/src/schemas/json.js');
 const utils = require('./utils');
@@ -280,10 +280,10 @@ class jsonSchema extends React.Component {
 
     return (
       <div className="json-schema-react-editor">
-        <Button className="import-json-button" type="primary" onClick={this.showModal}>
+        {/* <Button className="import-json-button" type="primary" onClick={this.showModal}>
           {LocalProvider('import_json')}
-        </Button>
-        <Modal
+        </Button> */}
+        {/* <Modal
           maskClosable={false}
           visible={visible}
           title={LocalProvider('import_json')}
@@ -314,9 +314,9 @@ class jsonSchema extends React.Component {
               <AceEditor data="" mode="json" onChange={this.handleImportJsonSchema} />
             </TabPane>
           </Tabs>
-        </Modal>
+        </Modal> */}
 
-        <Modal
+        {/* <Modal
           title={
             <div>
               {LocalProvider(editorModalName)}
@@ -347,9 +347,9 @@ class jsonSchema extends React.Component {
             onChange={e => this.changeDesc(e.target.value, editorModalName)}
             autosize={{ minRows: 6, maxRows: 10 }}
           />
-        </Modal>
+        </Modal> */}
 
-        {advVisible && (
+        {/* {advVisible && (
           <Modal
             title={LocalProvider('adv_setting')}
             maskClosable={false}
@@ -363,10 +363,10 @@ class jsonSchema extends React.Component {
           >
             <CustomItem data={JSON.stringify(this.state.curItemCustomValue, null, 2)} />
           </Modal>
-        )}
+        )} */}
 
         <Row>
-          {this.props.showEditor && (
+          {/* {this.props.showEditor && (
             <Col span={8}>
               <AceEditor
                 className="pretty-editor"
@@ -375,22 +375,24 @@ class jsonSchema extends React.Component {
                 onChange={this.handleParams}
               />
             </Col>
-          )}
+          )} */}
           <Col span={this.props.showEditor ? 16 : 24} className="wrapper object-style">
             <Row type="flex" align="middle">
               <Col span={8} className="col-item name-item col-item-name">
                 <Row type="flex" justify="space-around" align="middle">
+                  {/* 展开的箭头 */}
                   <Col span={2} className="down-style-col">
                     {schema.type === 'object' ? (
                       <span className="down-style" onClick={this.clickIcon}>
                         {this.state.show ? (
                           <CaretDownOutlined className="icon-object" type="caret-down" />
                         ) : (
-                          <CaretRightOutlined className="icon-object" type="caret-right" />
-                        )}
+                            <CaretRightOutlined className="icon-object" type="caret-right" />
+                          )}
                       </span>
                     ) : null}
                   </Col>
+                  {/* 字段名称 */}
                   <Col span={22}>
                     <Input
                       addonAfter={
@@ -408,8 +410,10 @@ class jsonSchema extends React.Component {
                   </Col>
                 </Row>
               </Col>
+              {/* 类型选择 */}
               <Col span={3} className="col-item col-item-type">
                 <Select
+                  defaultValue="object"
                   className="type-select-style"
                   onChange={e => this.changeType(`type`, e)}
                   value={schema.type || 'object'}
@@ -423,7 +427,7 @@ class jsonSchema extends React.Component {
                   })}
                 </Select>
               </Col>
-              {this.props.isMock && (
+              {/* {this.props.isMock && (
                 <Col span={3} className="col-item col-item-mock">
                   <MockSelect
                     schema={schema}
@@ -431,9 +435,10 @@ class jsonSchema extends React.Component {
                     onChange={value => this.changeValue(['mock'], value)}
                   />
                 </Col>
-              )}
+              )} */}
+              {/* 标题 title select */}
               <Col span={this.props.isMock ? 4 : 5} className="col-item col-item-mock">
-                <Input
+                {/* <Input
                   addonAfter={
                     <EditOutlined
                       type="edit"
@@ -445,8 +450,25 @@ class jsonSchema extends React.Component {
                   placeholder={'Title'}
                   value={this.props.schema.title}
                   onChange={e => this.changeValue(['title'], e.target.value)}
-                />
+                /> */}
+
+                <Select
+                  className="type-select-style"
+                  onChange={e => this.changeValue(['title'], e.target.value)}
+                  value={schema.type || 'object'}
+                >
+                  {SCHEMA_X.map((item, index) => {
+                    return (
+                      <Option value={item} key={index}>
+                        {item}
+                      </Option>
+                    );
+                  })}
+                </Select>
+
+
               </Col>
+              {/* 描述 description */}
               <Col span={this.props.isMock ? 4 : 5} className="col-item col-item-desc">
                 <Input
                   addonAfter={
@@ -462,12 +484,14 @@ class jsonSchema extends React.Component {
                   onChange={e => this.changeValue(['description'], e.target.value)}
                 />
               </Col>
+              {/* 设置按钮 与 Type 为 Object 添加节点的加号 */}
               <Col span={2} className="col-item col-item-setting">
                 <span className="adv-set" onClick={() => this.showAdv([], this.props.schema)}>
                   <Tooltip placement="top" title={LocalProvider('adv_setting')}>
                     <SettingOutlined type="setting" />
                   </Tooltip>
                 </span>
+                {/* */}
                 {schema.type === 'object' ? (
                   <span onClick={() => this.addChildField('properties')}>
                     <Tooltip placement="top" title={LocalProvider('add_child_node')}>

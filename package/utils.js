@@ -12,6 +12,7 @@ exports.format = [
 ];
 const _ = require('underscore');
 exports.SCHEMA_TYPE = ['string', 'number', 'array', 'object', 'boolean', 'integer'];
+exports.SCHEMA_X = ['句级提取模型', '要素级提取模型', '表格提取模型', '段落提取模型', '章节提取模型', '多事件提取模型',];
 exports.defaultSchema = {
   string: {
     type: 'string'
@@ -43,7 +44,7 @@ exports.defaultSchema = {
 // this.func = debounce(this.func, 400);
 exports.debounce = (func, wait) => {
   let timeout;
-  return function() {
+  return function () {
     clearTimeout(timeout);
     timeout = setTimeout(func, wait);
   };
@@ -59,7 +60,7 @@ function getData(state, keys) {
 
 exports.getData = getData;
 
-exports.setData = function(state, keys, value) {
+exports.setData = function (state, keys, value) {
   let curState = state;
   for (let i = 0; i < keys.length - 1; i++) {
     curState = curState[keys[i]];
@@ -67,7 +68,7 @@ exports.setData = function(state, keys, value) {
   curState[keys[keys.length - 1]] = value;
 };
 
-exports.deleteData = function(state, keys) {
+exports.deleteData = function (state, keys) {
   let curState = state;
   for (let i = 0; i < keys.length - 1; i++) {
     curState = curState[keys[i]];
@@ -76,14 +77,14 @@ exports.deleteData = function(state, keys) {
   delete curState[keys[keys.length - 1]];
 };
 
-exports.getParentKeys = function(keys) {
+exports.getParentKeys = function (keys) {
   if (keys.length === 1) return [];
   let arr = [].concat(keys);
   arr.splice(keys.length - 1, 1);
   return arr;
 };
 
-exports.clearSomeFields = function(keys, data) {
+exports.clearSomeFields = function (keys, data) {
   const newData = Object.assign({}, data);
   keys.forEach(key => {
     delete newData[key];
@@ -133,7 +134,7 @@ function cloneObject(obj) {
   if (typeof obj === 'object') {
     if (Array.isArray(obj)) {
       var newArr = [];
-      obj.forEach(function(item, index) {
+      obj.forEach(function (item, index) {
         newArr[index] = cloneObject(item);
       });
       return newArr;

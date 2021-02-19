@@ -37,7 +37,6 @@ const InputGroup = Input.Group;
 import LocaleProvider from '../LocalProvider/index.js';
 import utils from '../../utils';
 import MockSelect from '../MockSelect/index.js';
-import ExtractionModelTip from '../ToolTips/ExtractionModelTip';
 
 const mapping = (name, data, showEdit, showAdv) => {
   switch (data.type) {
@@ -213,7 +212,6 @@ class SchemaArray extends PureComponent {
                   );
                 })}
               </Select>
-              <ExtractionModelTip title={items['model_levels']}></ExtractionModelTip>
             </Col>
             {/* <Col span={this.context.isMock ? 4 : 5} className="col-item col-item-desc">
               <Input
@@ -470,7 +468,6 @@ class SchemaItem extends PureComponent {
                 );
               })}
             </Select>
-            <ExtractionModelTip title={value['model_levels']}></ExtractionModelTip>
           </Col>
           {/* 备注 */}
           {/* <Col span={this.context.isMock ? 4 : 5} className="col-item col-item-desc">

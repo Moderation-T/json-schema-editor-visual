@@ -39,9 +39,6 @@ const utils = require('./utils');
 // import CustomItem from './components/SchemaComponents/SchemaOther.js';
 import LocalProvider from './components/LocalProvider/index.js';
 // import MockSelect from './components/MockSelect/index.js';
-import ExtractionModelTip from './components/ToolTips/ExtractionModelTip';
-
-
 
 class jsonSchema extends React.Component {
   constructor(props) {
@@ -458,7 +455,6 @@ class jsonSchema extends React.Component {
                   onChange={value => this.changeValue(['model_levels'], value)}
                   value={schema['model_levels']}
                   placeholder='模型级别'
-
                 >
                   {SCHEMA_EXTRACTION_MODEL.map((item, index) => {
                     return (
@@ -468,7 +464,6 @@ class jsonSchema extends React.Component {
                     );
                   })}
                 </Select>
-                <ExtractionModelTip title={schema['model_levels']}></ExtractionModelTip>
               </Col>
               {/* 描述 description */}
               {/* <Col span={this.props.isMock ? 4 : 5} className="col-item col-item-desc">

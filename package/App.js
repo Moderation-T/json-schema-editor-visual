@@ -13,12 +13,13 @@ import {
   Tabs,
 } from 'antd';
 import {
-  QuestionCircleOutlined,
+  // QuestionCircleOutlined,
   CaretDownOutlined,
   CaretRightOutlined,
-  EditOutlined,
-  SettingOutlined,
+  // EditOutlined,
+  // SettingOutlined,
   PlusOutlined,
+  ExclamationCircleOutlined
 } from '@ant-design/icons'
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -26,18 +27,19 @@ const { TextArea } = Input;
 const TabPane = Tabs.TabPane;
 
 import './index.css';
-import AceEditor from './components/AceEditor/AceEditor.js';
+// import AceEditor from './components/AceEditor/AceEditor.js';
 import _ from 'underscore';
 import { connect } from 'react-redux';
-import SchemaJson from './components/SchemaComponents/SchemaJson.js';
+import SchemaJson from './components/SchemaComponents/SchemaJson';
 import PropTypes from 'prop-types';
-import { SCHEMA_TYPE, SCHEMA_X, debounce } from './utils.js';
+import { SCHEMA_TYPE, SCHEMA_EXTRACTION_MODEL, debounce } from './utils.js';
 import handleSchema from './schema';
 const GenerateSchema = require('generate-schema/src/schemas/json.js');
 const utils = require('./utils');
-import CustomItem from './components/SchemaComponents/SchemaOther.js';
+// import CustomItem from './components/SchemaComponents/SchemaOther.js';
 import LocalProvider from './components/LocalProvider/index.js';
-import MockSelect from './components/MockSelect/index.js';
+// import MockSelect from './components/MockSelect/index.js';
+import ExtractionModelTip from './components/ToolTips/ExtractionModelTip';
 
 
 
@@ -105,7 +107,6 @@ class jsonSchema extends React.Component {
     if (!data) {
       data = `{
         "type": "object",
-        "title": "title",
         "properties":{}
       }`;
     }
@@ -437,7 +438,7 @@ class jsonSchema extends React.Component {
                 </Col>
               )} */}
               {/* 标题 title select */}
-              <Col span={this.props.isMock ? 4 : 5} className="col-item col-item-mock">
+              <Col span={this.props.isMock ? 5 : 6} className="col-item col-item-mock">
                 {/* <Input
                   addonAfter={
                     <EditOutlined
@@ -454,10 +455,12 @@ class jsonSchema extends React.Component {
 
                 <Select
                   className="type-select-style"
-                  onChange={e => this.changeValue(['title'], e.target.value)}
-                  value={schema.type || 'object'}
+                  onChange={value => this.changeValue(['model_levels'], value)}
+                  value={schema['model_levels']}
+                  placeholder='模型级别'
+
                 >
-                  {SCHEMA_X.map((item, index) => {
+                  {SCHEMA_EXTRACTION_MODEL.map((item, index) => {
                     return (
                       <Option value={item} key={index}>
                         {item}
@@ -465,11 +468,10 @@ class jsonSchema extends React.Component {
                     );
                   })}
                 </Select>
-
-
+                <ExtractionModelTip title={schema['model_levels']}></ExtractionModelTip>
               </Col>
               {/* 描述 description */}
-              <Col span={this.props.isMock ? 4 : 5} className="col-item col-item-desc">
+              {/* <Col span={this.props.isMock ? 4 : 5} className="col-item col-item-desc">
                 <Input
                   addonAfter={
                     <EditOutlined
@@ -483,13 +485,13 @@ class jsonSchema extends React.Component {
                   value={schema.description}
                   onChange={e => this.changeValue(['description'], e.target.value)}
                 />
-              </Col>
+              </Col> */}
               {/* 设置按钮 与 Type 为 Object 添加节点的加号 */}
               <Col span={2} className="col-item col-item-setting">
                 <span className="adv-set" onClick={() => this.showAdv([], this.props.schema)}>
-                  <Tooltip placement="top" title={LocalProvider('adv_setting')}>
+                  {/* <Tooltip placement="top" title={LocalProvider('adv_setting')}>
                     <SettingOutlined type="setting" />
-                  </Tooltip>
+                  </Tooltip> */}
                 </span>
                 {/* */}
                 {schema.type === 'object' ? (

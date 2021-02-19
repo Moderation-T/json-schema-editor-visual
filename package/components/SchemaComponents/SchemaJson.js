@@ -11,30 +11,33 @@ import {
   Input,
   Modal,
   message,
-  Tooltip
+  Tooltip,
 } from 'antd';
 import {
   CaretDownOutlined,
   CaretRightOutlined,
-  EditOutlined,
-  SettingOutlined,
+  // EditOutlined,
+  // SettingOutlined,
   PlusOutlined,
   CloseOutlined,
+  ExclamationCircleOutlined
 } from '@ant-design/icons'
 import FieldInput from './FieldInput'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const { TextArea } = Input;
+
 import './schemaJson.css';
 import _ from 'underscore';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE } from '../../utils.js';
+import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE, SCHEMA_EXTRACTION_MODEL } from '../../utils.js';
 const InputGroup = Input.Group;
 import LocaleProvider from '../LocalProvider/index.js';
 import utils from '../../utils';
 import MockSelect from '../MockSelect/index.js';
+import ExtractionModelTip from '../ToolTips/ExtractionModelTip';
 
 const mapping = (name, data, showEdit, showAdv) => {
   switch (data.type) {
@@ -92,10 +95,17 @@ class SchemaArray extends PureComponent {
     this.Model.changeValueAction({ key, value });
   };
 
-  handleChangeTitle = e =>{
+  handleChangeTitle = value => {
     let prefix = this.getPrefix();
     let key = [].concat(prefix, `title`);
-    let value = e.target.value;
+    // let value = e.target.value;
+    this.Model.changeValueAction({ key, value });
+  }
+
+  handleChangeModelLevels = value => {
+    let prefix = this.getPrefix();
+    let key = [].concat(prefix, `model_levels`);
+    // let value = e.target.value;
     this.Model.changeValueAction({ key, value });
   }
 
@@ -146,8 +156,8 @@ class SchemaArray extends PureComponent {
                       {showIcon ? (
                         <CaretDownOutlined className="icon-object" type="caret-down" />
                       ) : (
-                        <CaretRightOutlined className="icon-object" type="caret-right" />
-                      )}
+                          <CaretRightOutlined className="icon-object" type="caret-right" />
+                        )}
                     </span>
                   ) : null}
                 </Col>
@@ -156,7 +166,7 @@ class SchemaArray extends PureComponent {
                 </Col>
               </Row>
             </Col>
-            <Col span={3} className="col-item col-item-type">
+            <Col span={4} className="col-item col-item-type">
               <Select
                 name="itemtype"
                 className="type-select-style"
@@ -173,8 +183,8 @@ class SchemaArray extends PureComponent {
               </Select>
             </Col>
             {this.context.isMock && (
-              <Col span={3} className="col-item col-item-mock">
-                
+              <Col span={5} className="col-item col-item-mock">
+
                 <MockSelect
                   schema={items}
                   showEdit={() => this.handleShowEdit('mock', items.type)}
@@ -182,28 +192,43 @@ class SchemaArray extends PureComponent {
                 />
               </Col>
             )}
-            <Col span={this.context.isMock ? 4 : 5} className="col-item col-item-mock">
-              <Input
+            <Col span={this.context.isMock ? 5 : 6} className="col-item col-item-mock">
+              {/* <Input
                 addonAfter={<EditOutlined type="edit" onClick={() => this.handleShowEdit('title')} />}
                 placeholder={LocaleProvider('title')}
                 value={items.title}
                 onChange={this.handleChangeTitle}
-              />
+              /> */}
+              <Select
+                className="type-select-style"
+                onChange={this.handleChangeModelLevels}
+                value={items['model_levels']}
+                placeholder='模型级别'
+              >
+                {SCHEMA_EXTRACTION_MODEL.map((item, index) => {
+                  return (
+                    <Option value={item} key={index}>
+                      {item}
+                    </Option>
+                  );
+                })}
+              </Select>
+              <ExtractionModelTip title={items['model_levels']}></ExtractionModelTip>
             </Col>
-            <Col span={this.context.isMock ? 4 : 5} className="col-item col-item-desc">
+            {/* <Col span={this.context.isMock ? 4 : 5} className="col-item col-item-desc">
               <Input
                 addonAfter={<EditOutlined type="edit" onClick={() => this.handleShowEdit('description')} />}
                 placeholder={LocaleProvider('description')}
                 value={items.description}
                 onChange={this.handleChangeDesc}
               />
-            </Col>
-            <Col span={this.context.isMock ? 2: 3} className="col-item col-item-setting">
-              <span className="adv-set" onClick={this.handleShowAdv}>
+            </Col> */}
+            <Col span={this.context.isMock ? 4 : 5} className="col-item col-item-setting">
+              {/* <span className="adv-set" onClick={this.handleShowAdv}>
                 <Tooltip placement="top" title={LocaleProvider('adv_setting')}>
                   <SettingOutlined type="setting" />
                 </Tooltip>
-              </span>
+              </span> */}
 
               {items.type === 'object' ? (
                 <span onClick={this.handleAddChildField}>
@@ -275,10 +300,17 @@ class SchemaItem extends PureComponent {
     this.Model.changeValueAction({ key, value });
   };
 
-  handleChangeTitle = e => {
+  handleChangeTitle = value => {
     let prefix = this.getPrefix();
     let key = [].concat(prefix, `title`);
-    let value = e.target.value;
+    // let value = e.target.value;
+    this.Model.changeValueAction({ key, value });
+  }
+
+  handleChangeModelLevels = value => {
+    let prefix = this.getPrefix();
+    let key = [].concat(prefix, `model_levels`);
+    // let value = e.target.value;
     this.Model.changeValueAction({ key, value });
   }
 
@@ -359,8 +391,8 @@ class SchemaItem extends PureComponent {
                     {showIcon ? (
                       <CaretDownOutlined className="icon-object" type="caret-down" />
                     ) : (
-                      <CaretRightOutlined className="icon-object" type="caret-right" />
-                    )}
+                        <CaretRightOutlined className="icon-object" type="caret-right" />
+                      )}
                   </span>
                 ) : null}
               </Col>
@@ -382,13 +414,12 @@ class SchemaItem extends PureComponent {
               </Col>
             </Row>
           </Col>
-
-
-          <Col span={3} className="col-item col-item-type">
+          <Col span={4} className="col-item col-item-type">
             <Select
               className="type-select-style"
               onChange={this.handleChangeType}
               value={value.type}
+
             >
               {SCHEMA_TYPE.map((item, index) => {
                 return (
@@ -399,10 +430,8 @@ class SchemaItem extends PureComponent {
               })}
             </Select>
           </Col>
-
-
           {this.context.isMock && (
-            <Col span={3} className="col-item col-item-mock">
+            <Col span={5} className="col-item col-item-mock">
               {/* <Input
                 addonAfter={
                   <Icon type="edit" onClick={() => this.handleShowEdit('mock', value.type)} />
@@ -419,44 +448,58 @@ class SchemaItem extends PureComponent {
               />
             </Col>
           )}
-
-          <Col span={this.context.isMock ? 4 : 5} className="col-item col-item-mock">
-            <Input
+          {/* title */}
+          <Col span={this.context.isMock ? 5 : 6} className="col-item col-item-mock">
+            {/* <Input
               addonAfter={<EditOutlined type="edit" onClick={() => this.handleShowEdit('title')} />}
               placeholder={LocaleProvider('title')}
               value={value.title}
               onChange={this.handleChangeTitle}
-            />
+            /> */}
+            <Select
+              className="type-select-style"
+              onChange={this.handleChangeModelLevels}
+              value={value['model_levels']}
+              placeholder='模型级别'
+            >
+              {SCHEMA_EXTRACTION_MODEL.map((item, index) => {
+                return (
+                  <Option value={item} key={index}>
+                    {item}
+                  </Option>
+                );
+              })}
+            </Select>
+            <ExtractionModelTip title={value['model_levels']}></ExtractionModelTip>
           </Col>
-
-          <Col span={this.context.isMock ? 4 : 5} className="col-item col-item-desc">
+          {/* 备注 */}
+          {/* <Col span={this.context.isMock ? 4 : 5} className="col-item col-item-desc">
             <Input
               addonAfter={<EditOutlined type="edit" onClick={() => this.handleShowEdit('description')} />}
               placeholder={LocaleProvider('description')}
               value={value.description}
               onChange={this.handleChangeDesc}
             />
-          </Col>
-
-          
-          <Col span={this.context.isMock ? 2: 3}  className="col-item col-item-setting">
-            <span className="adv-set" onClick={this.handleShowAdv}>
+          </Col> */}
+          {/* 功能键 */}
+          <Col span={this.context.isMock ? 4 : 5} className="col-item col-item-setting">
+            {/* <span className="adv-set" onClick={this.handleShowAdv}>
               <Tooltip placement="top" title={LocaleProvider('adv_setting')}>
                 <SettingOutlined type="setting" />
               </Tooltip>
-            </span>
+            </span> */}
             <span className="delete-item" onClick={this.handleDeleteItem}>
               <CloseOutlined type="close" className="close" />
             </span>
             {value.type === 'object' ? (
               <DropPlus prefix={prefix} name={name} />
             ) : (
-              <span onClick={this.handleAddField}>
-                <Tooltip placement="top" title={LocaleProvider('add_sibling_node')}>
-                  <PlusOutlined type="plus" className="plus" />
-                </Tooltip>
-              </span>
-            )}
+                <span onClick={this.handleAddField}>
+                  <Tooltip placement="top" title={LocaleProvider('add_sibling_node')}>
+                    <PlusOutlined type="plus" className="plus" />
+                  </Tooltip>
+                </span>
+              )}
           </Col>
         </Row>
         <div className="option-formStyle">{mapping(prefixArray, value, showEdit, showAdv)}</div>

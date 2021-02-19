@@ -12,7 +12,7 @@ exports.format = [
 ];
 const _ = require('underscore');
 exports.SCHEMA_TYPE = ['string', 'number', 'array', 'object', 'boolean', 'integer'];
-exports.SCHEMA_X = ['句级提取模型', '要素级提取模型', '表格提取模型', '段落提取模型', '章节提取模型', '多事件提取模型',];
+exports.SCHEMA_EXTRACTION_MODEL = ['句级提取模型', '要素级提取模型', '表格提取模型', '段落提取模型', '章节提取模型', '多事件提取模型',];
 exports.defaultSchema = {
   string: {
     type: 'string'
@@ -102,7 +102,6 @@ function getFieldstitle(data) {
 }
 
 function handleSchemaRequired(schema, checked) {
-  // console.log(schema)
   if (schema.type === 'object') {
     let requiredtitle = getFieldstitle(schema.properties);
 

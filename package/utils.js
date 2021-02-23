@@ -12,7 +12,17 @@ exports.format = [
 ];
 const _ = require('underscore');
 exports.SCHEMA_TYPE = ['string', 'number', 'array', 'object', 'boolean', 'integer'];
-exports.SCHEMA_EXTRACTION_MODEL = ['句级提取模型', '要素级提取模型', '表格提取模型', '段落提取模型', '章节提取模型', '多事件提取模型',];
+
+
+exports.SCHEMA_EXTRACTION_MODEL = [
+  '句级提取',
+  '句内提取',
+  '表格单元提取',
+  '章节内容提取',
+  '表格多事件',
+  '子标题多事件',
+  '文本多事件'
+];
 exports.defaultSchema = {
   string: {
     type: 'string'

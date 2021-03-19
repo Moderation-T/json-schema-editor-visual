@@ -16,12 +16,12 @@ exports.SCHEMA_TYPE = ['string', 'number', 'array', 'object', 'boolean', 'intege
 
 exports.SCHEMA_EXTRACTION_MODEL = [
   '句级提取',
-  '句内提取',
+  // '句内提取',
   '表格单元提取',
   '章节内容提取',
   '表格多事件',
   '子标题多事件',
-  '文本多事件'
+  // '文本多事件'
 ];
 exports.defaultSchema = {
   string: {
